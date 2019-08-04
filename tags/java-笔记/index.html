@@ -82,7 +82,7 @@
 <meta name="description" content="记录日常学习生活中遇到的编程问题和解决方案">
 <meta property="og:type" content="website">
 <meta property="og:title" content="个人博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/tags/java-笔记/index.html">
 <meta property="og:site_name" content="个人博客">
 <meta property="og:description" content="记录日常学习生活中遇到的编程问题和解决方案">
 <meta property="og:locale" content="default">
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/tags/java-笔记/">
 
 
 
 
 
-  <title>个人博客</title>
+  <title>Tag: java 笔记 | 个人博客</title>
   
 
 
@@ -143,8 +143,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -217,320 +216,51 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
-    
+
+  
+  
+  
+  <div class="post-block tag">
+
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>java 笔记<small>Tag</small>
+        </h1>
+      </div>
+
       
-
-  
-
-  
-  
-  
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/04/java中各种对象（-O）笔记/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Wang Chao">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2019/08/04/java中各种对象（-O）笔记/" itemprop="url">
+              
+                <span itemprop="name">java中各种对象（*O）笔记</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/04/java中各种对象（-O）笔记/" itemprop="url">java中各种对象（*O）笔记</a></h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-04T20:32:51+08:00">
-                2019-08-04
-              </time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2019-08-04T20:32:51+08:00" content="2019-08-04">
+          08-04
+        </time>
+      </div>
 
-            
+    </header>
+  </article>
 
-            
-          </span>
 
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article&#58;</span>
-                
-                <span title="Words count in article">
-                  
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">
-                  
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本科阶段学习SSM框架的时候，一般都是去网上找一个写好的目录结构，然后一点一点的新建目录，有的时候新建PO，有的时候新建VO……</p>
-<p>当时也没有多想，只想把项目进行完，后来又一直拖延，没有及时理解，正巧现在有个小项目需要用Java搭建后台框架，顺便做个笔记让自己多多理解。</p>
-<p>随时更新。</p>
-<h2 id="VO-Value-Object-或者-View-Object"><a href="#VO-Value-Object-或者-View-Object" class="headerlink" title="VO(Value Object 或者 View Object)"></a>VO(Value Object 或者 View Object)</h2><p>值对象：也可以理解为业务对象，存在于业务流程中的对象，用new创建，并由GC回收。</p>
-<p>理解举例：如果两个业务之间只想传递两个值，而这两个值存在于两个POJO（Plain Ordinary Java Object），即两个数据表中，直接传两个PO对象就太浪费了，所以可以根据业务需求封装一个VO对象，来进行传递。</p>
-<h2 id="POJO-Plain-Ordinary-Java-Object"><a href="#POJO-Plain-Ordinary-Java-Object" class="headerlink" title="POJO(Plain Ordinary Java Object)"></a>POJO(Plain Ordinary Java Object)</h2><p>POJO：一般只有简单属性，get、set方法，属性和数据库一一对应，基本上数据库有什么属性，持久对象就有什么属性。</p>
-<h2 id="PO-Persistent-Object"><a href="#PO-Persistent-Object" class="headerlink" title="PO(Persistent Object)"></a>PO(Persistent Object)</h2><p>持久对象：可以用于向数据库中插入、更新、删除信息。</p>
-
-          
-        
       
     </div>
-    
-    
-    
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
   
   
   
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/02/第一篇博客/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Wang Chao">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/02/第一篇博客/" itemprop="url">第一篇博客</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-02T18:35:20+08:00">
-                2019-08-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article&#58;</span>
-                
-                <span title="Words count in article">
-                  
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">
-                  
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="第一篇博客"><a href="#第一篇博客" class="headerlink" title="第一篇博客"></a>第一篇博客</h2><p>从年初就想建立一个自己的博客，记录一下自己平常生活中遇到的编程问题，但是一直拖延到现在……</p>
-<p>想发的东西都快忘的一干二净了，终于拖到今天算是正是开启了博客之旅。</p>
-<p>毕竟现在还是学习阶段，估计也不会有特别专业的内容，也不会有太多人看，文笔也不好，就全当是写给自己的博客吧。</p>
-<h2 id="你好-博客"><a href="#你好-博客" class="headerlink" title="你好 博客"></a>你好 博客</h2><p>从开始学编程到现在研一快结束了，每学习一种新的编程语言第一个练习基本都是”Hello Wolrd”，作为第一篇博客，就以这个为结束吧。</p>
-<h3 id="Hello-Blog"><a href="#Hello-Blog" class="headerlink" title="Hello Blog"></a>Hello Blog</h3>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
 
   
 
