@@ -232,6 +232,341 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/18/Iterator和Iterable浅析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wang Chao">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/18/Iterator和Iterable浅析/" itemprop="url">Iterator和Iterable浅析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-18T15:10:30+08:00">
+                2019-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Iterator和Iterable浅析"><a href="#Iterator和Iterable浅析" class="headerlink" title="Iterator和Iterable浅析"></a>Iterator和Iterable浅析</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在帮朋友debug代码的时候，遇到了一个小问题。</p>
+<p>他实现了一个Map类，复写了其中的一个方法，返回值为Iterator<t>类型，由于一开始红线报错，所以一直根据IDE提示更改，报出ClassCastException，代码如下：</t></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;String&gt; <span class="title">get</span><span class="params">(String string)</span></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (Iterator&lt;String&gt;) Arrays.asList(string.split(<span class="string">" "</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这时我就找ArrayList的源码开始找原因。</p>
+<p>找了一会发现，ArrayList根本没有实现Iterator接口，而是实现的Iterable接口，理所当然的没法进行类型转换，找到原因就好解决问题了。一通修改后，改成了如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;String&gt; <span class="title">get</span><span class="params">(String string)</span></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> Arrays.asList(string.split(<span class="string">" "</span>)).iterator();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>改完后，终于程序跑通了，算是解决了一个小问题。</p>
+<p>但是转念一想，Iterator意为迭代器，Iterable意为可迭代的，这两个单词的意思如此接近，那又为什么这样实现呢？</p>
+<p>带着这样的疑问我开始寻找答案，一通搜索、查找。</p>
+<h2 id="浅析"><a href="#浅析" class="headerlink" title="浅析"></a>浅析</h2><p>Iterable意为可迭代的，也就是说如果一个类实现了这个接口，那这个类就可以迭代，打开Iterable的源码，可以发现其中有一个接口方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Iterator&lt;T&gt; <span class="title">iterator</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里出现了我们想要的Iterator，那么为啥要多此一举呢？直接实现Iterator接口不就好了，经过进一步的查找资料我找到了原因。</p>
+<p>在Iterator的源码中，有2个必须要实现的接口方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">E <span class="title">next</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说如果实现了Iterator接口就要实现这两个方法，根据字面意思，要想使用这两个方法，就必须要有一个地方记录当前迭代位置信息，才能进行下一个。</p>
+<p>在AbstractList中的内部类Itr实现了Iterator接口，就有两个记录位置的变量：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> cursor = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> lastRet = -<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>那么问题就来了，如果我们想传递这个类，那么势必就会把当前迭代位置信息传递过去，但我们可能只想从开始迭代，那就需要一个reset方法，但是这样又会影响另一个地方的迭代过程，所以这样显然是不好的。</p>
+<p>而如果是实现的Iterable接口的话，就需要复写iterator方法，从而返回一个Iterator。</p>
+<p>在AbstractList中，它是这样实现的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Itr();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>由此可见，每一次调用iterator方法就重新生成了一个Iterator类，这样的话即使是同一个对象，在不同的地方调用iterator方法都不会互相产生影响。</p>
+<p>因此，ArrayList实现的是Iterable接口而不是Iterator接口。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>尽管只是一次小小的debug，但是通过这一次的过程，我发现了代码设计的巧妙，以前总是会用，需要使用迭代器的时候就调用iterator方法，从来没想过为啥要这样用。</p>
+<p>这一次算是一次小小的提高，当然我还需要更加努力，这一点小知识或许只是冰山中的一根雪糕。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/12/服务器mstsc端口修改/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wang Chao">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/12/服务器mstsc端口修改/" itemprop="url">服务器mstsc端口修改</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-12T20:15:49+08:00">
+                2019-10-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>#前言</p>
+<p>前一段时间内网服务器被病毒入侵，导致服务器所有数据被加密，出于无奈只好格式化了硬盘并且重装了系统，然而在重新配置环境的过程中问题不断。学校内网封禁了3389端口，所以在远程桌面的时候必须更改端口。修改mstsc的端口浪费了我很长时间，因此准备整理一下自己遇到的问题和查到的解决方案，提醒自己以后记住。</p>
+<p>系统重新安装的是Windows server 2019版本。</p>
+<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><h2 id="检查系统配置"><a href="#检查系统配置" class="headerlink" title="检查系统配置"></a>检查系统配置</h2><p>首先先检查自己的系统配置，看看该开启的选项是否已经开启。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/04/java中各种对象（-O）笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -494,6 +829,7 @@
             <h2 id="第一篇博客"><a href="#第一篇博客" class="headerlink" title="第一篇博客"></a>第一篇博客</h2><p>从年初就想建立一个自己的博客，记录一下自己平常生活中遇到的编程问题，但是一直拖延到现在……</p>
 <p>想发的东西都快忘的一干二净了，终于拖到今天算是正是开启了博客之旅。</p>
 <p>毕竟现在还是学习阶段，估计也不会有特别专业的内容，也不会有太多人看，文笔也不好，就全当是写给自己的博客吧。</p>
+<p>部分资料可能来源于网上搜索，如有不妥，请立即联系删除。</p>
 <h2 id="你好-博客"><a href="#你好-博客" class="headerlink" title="你好 博客"></a>你好 博客</h2><p>从开始学编程到现在研一快结束了，每学习一种新的编程语言第一个练习基本都是”Hello Wolrd”，作为第一篇博客，就以这个为结束吧。</p>
 <h3 id="Hello-Blog"><a href="#Hello-Blog" class="headerlink" title="Hello Blog"></a>Hello Blog</h3>
           
@@ -576,7 +912,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -589,7 +925,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>

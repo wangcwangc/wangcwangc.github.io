@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="java,">
+  <meta name="keywords" content="java,源码,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="前言本科阶段学习SSM框架的时候，一般都是去网上找一个写好的目录结构，然后一点一点的新建目录，有的时候新建PO，有的时候新建VO…… 当时也没有多想，只想把项目进行完，后来又一直拖延，没有及时理解，正巧现在有个小项目需要用Java搭建后台框架，顺便做个笔记让自己多多理解。 随时更新。 VO(Value Object 或者 View Object)值对象：也可以理解为业务对象，存在于业务流程中的对象">
-<meta name="keywords" content="java">
+<meta name="description" content="Iterator和Iterable浅析前言最近在帮朋友debug代码的时候，遇到了一个小问题。 他实现了一个Map类，复写了其中的一个方法，返回值为Iterator类型，由于一开始红线报错，所以一直根据IDE提示更改，报出ClassCastException，代码如下： 123public Iterator&amp;lt;String&amp;gt; get(String string)&amp;#123;  retur">
+<meta name="keywords" content="java,源码">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java中各种对象（*O）笔记">
-<meta property="og:url" content="http://yoursite.com/2019/08/04/java中各种对象（-O）笔记/index.html">
+<meta property="og:title" content="Iterator和Iterable浅析">
+<meta property="og:url" content="http://yoursite.com/2019/10/18/Iterator和Iterable浅析/index.html">
 <meta property="og:site_name" content="个人博客">
-<meta property="og:description" content="前言本科阶段学习SSM框架的时候，一般都是去网上找一个写好的目录结构，然后一点一点的新建目录，有的时候新建PO，有的时候新建VO…… 当时也没有多想，只想把项目进行完，后来又一直拖延，没有及时理解，正巧现在有个小项目需要用Java搭建后台框架，顺便做个笔记让自己多多理解。 随时更新。 VO(Value Object 或者 View Object)值对象：也可以理解为业务对象，存在于业务流程中的对象">
+<meta property="og:description" content="Iterator和Iterable浅析前言最近在帮朋友debug代码的时候，遇到了一个小问题。 他实现了一个Map类，复写了其中的一个方法，返回值为Iterator类型，由于一开始红线报错，所以一直根据IDE提示更改，报出ClassCastException，代码如下： 123public Iterator&amp;lt;String&amp;gt; get(String string)&amp;#123;  retur">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-18T07:59:23.864Z">
+<meta property="og:updated_time" content="2019-10-18T07:59:22.703Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="java中各种对象（*O）笔记">
-<meta name="twitter:description" content="前言本科阶段学习SSM框架的时候，一般都是去网上找一个写好的目录结构，然后一点一点的新建目录，有的时候新建PO，有的时候新建VO…… 当时也没有多想，只想把项目进行完，后来又一直拖延，没有及时理解，正巧现在有个小项目需要用Java搭建后台框架，顺便做个笔记让自己多多理解。 随时更新。 VO(Value Object 或者 View Object)值对象：也可以理解为业务对象，存在于业务流程中的对象">
+<meta name="twitter:title" content="Iterator和Iterable浅析">
+<meta name="twitter:description" content="Iterator和Iterable浅析前言最近在帮朋友debug代码的时候，遇到了一个小问题。 他实现了一个Map类，复写了其中的一个方法，返回值为Iterator类型，由于一开始红线报错，所以一直根据IDE提示更改，报出ClassCastException，代码如下： 123public Iterator&amp;lt;String&amp;gt; get(String string)&amp;#123;  retur">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/08/04/java中各种对象（-O）笔记/">
+  <link rel="canonical" href="http://yoursite.com/2019/10/18/Iterator和Iterable浅析/">
 
 
 
 
 
-  <title>java中各种对象（*O）笔记 | 个人博客</title>
+  <title>Iterator和Iterable浅析 | 个人博客</title>
   
 
 
@@ -233,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/04/java中各种对象（-O）笔记/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/18/Iterator和Iterable浅析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Wang Chao">
@@ -250,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">java中各种对象（*O）笔记</h1>
+          <h1 class="post-title" itemprop="name headline">Iterator和Iterable浅析</h1>
         
 
         <div class="post-meta">
@@ -262,8 +262,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-04T20:32:51+08:00">
-                2019-08-04
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-18T15:10:30+08:00">
+                2019-10-18
               </time>
             
 
@@ -331,13 +331,37 @@
       
 
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本科阶段学习SSM框架的时候，一般都是去网上找一个写好的目录结构，然后一点一点的新建目录，有的时候新建PO，有的时候新建VO……</p>
-<p>当时也没有多想，只想把项目进行完，后来又一直拖延，没有及时理解，正巧现在有个小项目需要用Java搭建后台框架，顺便做个笔记让自己多多理解。</p>
-<p>随时更新。</p>
-<h2 id="VO-Value-Object-或者-View-Object"><a href="#VO-Value-Object-或者-View-Object" class="headerlink" title="VO(Value Object 或者 View Object)"></a>VO(Value Object 或者 View Object)</h2><p>值对象：也可以理解为业务对象，存在于业务流程中的对象，用new创建，并由GC回收。</p>
-<p>理解举例：如果两个业务之间只想传递两个值，而这两个值存在于两个POJO（Plain Ordinary Java Object），即两个数据表中，直接传两个PO对象就太浪费了，所以可以根据业务需求封装一个VO对象，来进行传递。</p>
-<h2 id="POJO-Plain-Ordinary-Java-Object"><a href="#POJO-Plain-Ordinary-Java-Object" class="headerlink" title="POJO(Plain Ordinary Java Object)"></a>POJO(Plain Ordinary Java Object)</h2><p>POJO：一般只有简单属性，get、set方法，属性和数据库一一对应，基本上数据库有什么属性，持久对象就有什么属性。</p>
-<h2 id="PO-Persistent-Object"><a href="#PO-Persistent-Object" class="headerlink" title="PO(Persistent Object)"></a>PO(Persistent Object)</h2><p>持久对象：可以用于向数据库中插入、更新、删除信息。</p>
+        <h1 id="Iterator和Iterable浅析"><a href="#Iterator和Iterable浅析" class="headerlink" title="Iterator和Iterable浅析"></a>Iterator和Iterable浅析</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在帮朋友debug代码的时候，遇到了一个小问题。</p>
+<p>他实现了一个Map类，复写了其中的一个方法，返回值为Iterator<t>类型，由于一开始红线报错，所以一直根据IDE提示更改，报出ClassCastException，代码如下：</t></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;String&gt; <span class="title">get</span><span class="params">(String string)</span></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (Iterator&lt;String&gt;) Arrays.asList(string.split(<span class="string">" "</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这时我就找ArrayList的源码开始找原因。</p>
+<p>找了一会发现，ArrayList根本没有实现Iterator接口，而是实现的Iterable接口，理所当然的没法进行类型转换，找到原因就好解决问题了。一通修改后，改成了如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;String&gt; <span class="title">get</span><span class="params">(String string)</span></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> Arrays.asList(string.split(<span class="string">" "</span>)).iterator();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>改完后，终于程序跑通了，算是解决了一个小问题。</p>
+<p>但是转念一想，Iterator意为迭代器，Iterable意为可迭代的，这两个单词的意思如此接近，那又为什么这样实现呢？</p>
+<p>带着这样的疑问我开始寻找答案，一通搜索、查找。</p>
+<h2 id="浅析"><a href="#浅析" class="headerlink" title="浅析"></a>浅析</h2><p>Iterable意为可迭代的，也就是说如果一个类实现了这个接口，那这个类就可以迭代，打开Iterable的源码，可以发现其中有一个接口方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Iterator&lt;T&gt; <span class="title">iterator</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里出现了我们想要的Iterator，那么为啥要多此一举呢？直接实现Iterator接口不就好了，经过进一步的查找资料我找到了原因。</p>
+<p>在Iterator的源码中，有2个必须要实现的接口方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">E <span class="title">next</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说如果实现了Iterator接口就要实现这两个方法，根据字面意思，要想使用这两个方法，就必须要有一个地方记录当前迭代位置信息，才能进行下一个。</p>
+<p>在AbstractList中的内部类Itr实现了Iterator接口，就有两个记录位置的变量：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> cursor = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> lastRet = -<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>那么问题就来了，如果我们想传递这个类，那么势必就会把当前迭代位置信息传递过去，但我们可能只想从开始迭代，那就需要一个reset方法，但是这样又会影响另一个地方的迭代过程，所以这样显然是不好的。</p>
+<p>而如果是实现的Iterable接口的话，就需要复写iterator方法，从而返回一个Iterator。</p>
+<p>在AbstractList中，它是这样实现的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Itr();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>由此可见，每一次调用iterator方法就重新生成了一个Iterator类，这样的话即使是同一个对象，在不同的地方调用iterator方法都不会互相产生影响。</p>
+<p>因此，ArrayList实现的是Iterable接口而不是Iterator接口。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>尽管只是一次小小的debug，但是通过这一次的过程，我发现了代码设计的巧妙，以前总是会用，需要使用迭代器的时候就调用iterator方法，从来没想过为啥要这样用。</p>
+<p>这一次算是一次小小的提高，当然我还需要更加努力，这一点小知识或许只是冰山中的一根雪糕。</p>
 
       
     </div>
@@ -357,6 +381,8 @@
           
             <a href="/tags/java/" rel="tag"># java</a>
           
+            <a href="/tags/源码/" rel="tag"># 源码</a>
+          
         </div>
       
 
@@ -368,8 +394,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/02/第一篇博客/" rel="next" title="第一篇博客">
-                <i class="fa fa-chevron-left"></i> 第一篇博客
+              <a href="/2019/10/12/服务器mstsc端口修改/" rel="next" title="服务器mstsc端口修改">
+                <i class="fa fa-chevron-left"></i> 服务器mstsc端口修改
               </a>
             
           </div>
@@ -377,10 +403,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/10/12/服务器mstsc端口修改/" rel="prev" title="服务器mstsc端口修改">
-                服务器mstsc端口修改 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -503,7 +525,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#VO-Value-Object-或者-View-Object"><span class="nav-number">1.1.</span> <span class="nav-text">VO(Value Object 或者 View Object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#POJO-Plain-Ordinary-Java-Object"><span class="nav-number">1.2.</span> <span class="nav-text">POJO(Plain Ordinary Java Object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PO-Persistent-Object"><span class="nav-number">1.3.</span> <span class="nav-text">PO(Persistent Object)</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Iterator和Iterable浅析"><span class="nav-number">1.</span> <span class="nav-text">Iterator和Iterable浅析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浅析"><span class="nav-number">1.2.</span> <span class="nav-text">浅析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">1.3.</span> <span class="nav-text">后记</span></a></li></ol></li></ol></div>
             
 
           </div>
