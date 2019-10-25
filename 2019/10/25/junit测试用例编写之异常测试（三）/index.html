@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="server,mstsc,">
+  <meta name="keywords" content="java,junit,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="前言前一段时间内网服务器被病毒入侵，导致服务器所有数据被加密，出于无奈只好格式化了硬盘并且重装了系统，然而在重新配置环境的过程中问题不断。学校内网封禁了3389端口，所以在远程桌面的时候必须更改端口。修改mstsc的端口浪费了我很长时间，因此准备整理一下自己遇到的问题和查到的解决方案，提醒自己以后记住。 系统重新安装的是Windows server 2019版本。 步骤检查系统配置首先先检查自己的">
-<meta name="keywords" content="server,mstsc">
+<meta name="description" content="在junit测试用例的编写过程中，有三种常用的编写方式，每一种都各有特点，根据实际情况选择。 首先是示例代码： 123456public class MyException &amp;#123;    public void myException() throws IllegalAccessException &amp;#123;      	//抛出异常        throw new IllegalAcc">
+<meta name="keywords" content="java,junit">
 <meta property="og:type" content="article">
-<meta property="og:title" content="服务器mstsc端口修改">
-<meta property="og:url" content="http://yoursite.com/2019/10/12/服务器mstsc端口修改/index.html">
+<meta property="og:title" content="junit测试用例编写之异常测试（三）">
+<meta property="og:url" content="http://yoursite.com/2019/10/25/junit测试用例编写之异常测试（三）/index.html">
 <meta property="og:site_name" content="个人博客">
-<meta property="og:description" content="前言前一段时间内网服务器被病毒入侵，导致服务器所有数据被加密，出于无奈只好格式化了硬盘并且重装了系统，然而在重新配置环境的过程中问题不断。学校内网封禁了3389端口，所以在远程桌面的时候必须更改端口。修改mstsc的端口浪费了我很长时间，因此准备整理一下自己遇到的问题和查到的解决方案，提醒自己以后记住。 系统重新安装的是Windows server 2019版本。 步骤检查系统配置首先先检查自己的">
+<meta property="og:description" content="在junit测试用例的编写过程中，有三种常用的编写方式，每一种都各有特点，根据实际情况选择。 首先是示例代码： 123456public class MyException &amp;#123;    public void myException() throws IllegalAccessException &amp;#123;      	//抛出异常        throw new IllegalAcc">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-18T08:02:46.006Z">
+<meta property="og:updated_time" content="2019-10-25T07:42:39.539Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="服务器mstsc端口修改">
-<meta name="twitter:description" content="前言前一段时间内网服务器被病毒入侵，导致服务器所有数据被加密，出于无奈只好格式化了硬盘并且重装了系统，然而在重新配置环境的过程中问题不断。学校内网封禁了3389端口，所以在远程桌面的时候必须更改端口。修改mstsc的端口浪费了我很长时间，因此准备整理一下自己遇到的问题和查到的解决方案，提醒自己以后记住。 系统重新安装的是Windows server 2019版本。 步骤检查系统配置首先先检查自己的">
+<meta name="twitter:title" content="junit测试用例编写之异常测试（三）">
+<meta name="twitter:description" content="在junit测试用例的编写过程中，有三种常用的编写方式，每一种都各有特点，根据实际情况选择。 首先是示例代码： 123456public class MyException &amp;#123;    public void myException() throws IllegalAccessException &amp;#123;      	//抛出异常        throw new IllegalAcc">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/10/12/服务器mstsc端口修改/">
+  <link rel="canonical" href="http://yoursite.com/2019/10/25/junit测试用例编写之异常测试（三）/">
 
 
 
 
 
-  <title>服务器mstsc端口修改 | 个人博客</title>
+  <title>junit测试用例编写之异常测试（三） | 个人博客</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/12/服务器mstsc端口修改/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/25/junit测试用例编写之异常测试（三）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Wang Chao">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">服务器mstsc端口修改</h1>
+          <h1 class="post-title" itemprop="name headline">junit测试用例编写之异常测试（三）</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-12T20:15:49+08:00">
-                2019-10-12
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-25T14:48:56+08:00">
+                2019-10-25
               </time>
             
 
@@ -351,9 +351,23 @@
       
 
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前一段时间内网服务器被病毒入侵，导致服务器所有数据被加密，出于无奈只好格式化了硬盘并且重装了系统，然而在重新配置环境的过程中问题不断。学校内网封禁了3389端口，所以在远程桌面的时候必须更改端口。修改mstsc的端口浪费了我很长时间，因此准备整理一下自己遇到的问题和查到的解决方案，提醒自己以后记住。</p>
-<p>系统重新安装的是Windows server 2019版本。</p>
-<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><h2 id="检查系统配置"><a href="#检查系统配置" class="headerlink" title="检查系统配置"></a>检查系统配置</h2><p>首先先检查自己的系统配置，看看该开启的选项是否已经开启。</p>
+        <p>在junit测试用例的编写过程中，有三种常用的编写方式，每一种都各有特点，根据实际情况选择。</p>
+<p>首先是示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyException</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">myException</span><span class="params">()</span> <span class="keyword">throws</span> IllegalAccessException </span>&#123;</span><br><span class="line">      	<span class="comment">//抛出异常</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalAccessException(<span class="string">"IllegalAccessException"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用ExpectedException的方式"><a href="#使用ExpectedException的方式" class="headerlink" title="使用ExpectedException的方式"></a>使用ExpectedException的方式</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Rule</span></span><br><span class="line"><span class="keyword">public</span> ExpectedException expectedException = ExpectedException.none();</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span>(timeout = <span class="number">4000</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMyException</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">  MyException myException = <span class="keyword">new</span> MyException();</span><br><span class="line">  expectedException.expect(IllegalAccessException.class);</span><br><span class="line">  expectedException.expectMessage(<span class="string">"IllegalAccessException"</span>);</span><br><span class="line">  myException.myException();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方式的好处就是代码简单，而且可以指定在哪里检测异常，例如若果MyException的构造方法抛出了异常，那么这个测试用例就不会跑通，可以更好的定位异常位置，而且代码相对而言比较清晰明了。</p>
+<p>但是这种方式同样存在缺点就是在异常被检测到以后，就会终止这个测试方法，就是说<code>myException.myException();</code>后边的方法就都不会执行了。</p>
+<h2 id="使用-Test注解的形式"><a href="#使用-Test注解的形式" class="headerlink" title="使用@Test注解的形式"></a>使用@Test注解的形式</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span>(timeout = <span class="number">4000</span>, expected = IllegalAccessException.class)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMyException</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">  MyException myException = <span class="keyword">new</span> MyException();</span><br><span class="line">  myException.myException();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在注解<code>@Test</code>里边添加<code>expected = IllegalAccessException.class</code>，这样测试方法中的异常就会被捕获，而且这样写的代码最简洁。</p>
+<p>但是同样也存问题，就是不能指定断言的信息，而且这样不能定位到方法内部到底是哪里抛出了异常，例如如果MyException的构造方法抛出了异常，这样测试方法同样会跑通。</p>
+<h2 id="使用try-catch的方式"><a href="#使用try-catch的方式" class="headerlink" title="使用try-catch的方式"></a>使用try-catch的方式</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span>(timeout = <span class="number">4000</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMyException</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">  MyException myException = <span class="keyword">new</span> MyException();</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    myException.myException();</span><br><span class="line">    fail(<span class="string">"expected IllegalArgumentException"</span>);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">    assertEquals(<span class="string">"IllegalAccessException"</span>, e.getMessage());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方式的好处就是可以检测特定位置的异常抛出，并且不影响下文的执行。</p>
+<p>但是缺点就是代码太复杂，当然复杂更容易获得完整的测试信息。</p>
+<p>以上就是目前Junit 4.x下主流的几种对异常测试的方式，具体使用哪一种可以根据实际情况来定，而<code>@Test(timeout = 4000)</code>中的timeout属性是我自己习惯写上的，并不是此文和前文的规定书写形式，只是为了放在在某些特定情况下测试方法卡住的情况发生。</p>
 
       
     </div>
@@ -371,9 +385,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/server/" rel="tag"># server</a>
+            <a href="/tags/java/" rel="tag"># java</a>
           
-            <a href="/tags/mstsc/" rel="tag"># mstsc</a>
+            <a href="/tags/junit/" rel="tag"># junit</a>
           
         </div>
       
@@ -386,8 +400,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/04/java中各种对象（-O）笔记/" rel="next" title="java中各种对象（*O）笔记">
-                <i class="fa fa-chevron-left"></i> java中各种对象（*O）笔记
+              <a href="/2019/10/24/junit测试用例编写之控制台测试（二）/" rel="next" title="junit测试用例编写之控制台测试（二）">
+                <i class="fa fa-chevron-left"></i> junit测试用例编写之控制台测试（二）
               </a>
             
           </div>
@@ -395,10 +409,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/10/18/Iterator和Iterable浅析/" rel="prev" title="Iterator和Iterable浅析">
-                Iterator和Iterable浅析 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -531,7 +541,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#步骤"><span class="nav-number">2.</span> <span class="nav-text">步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#检查系统配置"><span class="nav-number">2.1.</span> <span class="nav-text">检查系统配置</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用ExpectedException的方式"><span class="nav-number">1.</span> <span class="nav-text">使用ExpectedException的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Test注解的形式"><span class="nav-number">2.</span> <span class="nav-text">使用@Test注解的形式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用try-catch的方式"><span class="nav-number">3.</span> <span class="nav-text">使用try-catch的方式</span></a></li></ol></div>
             
 
           </div>
