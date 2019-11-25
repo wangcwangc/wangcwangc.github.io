@@ -252,6 +252,192 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/25/Soot学习之Soot简介（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wang Chao">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/11/25/Soot学习之Soot简介（一）/" itemprop="url">Soot学习之Soot简介（一）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-25T10:51:41+08:00">
+                2019-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Soot是什么"><a href="#Soot是什么" class="headerlink" title="Soot是什么"></a>Soot是什么</h2><p>根据Soot<a href="https://sable.github.io/soot/" target="_blank" rel="noopener">官网</a>的简介，Soot最初是作为Java优化框架开发的。但是后来世界各地的开发者都用Soot来分析、检测、优化和可视化Java以及Android程序。</p>
+<h2 id="Soot的输入"><a href="#Soot的输入" class="headerlink" title="Soot的输入"></a>Soot的输入</h2><p>目前，Soot可以从以下来源来处理代码：</p>
+<ul>
+<li>Java源代码</li>
+<li>Java字节码，包括编译成Java字节码的其他语言，例如Scala</li>
+<li>Android字节码</li>
+<li>Jimple中间表示</li>
+<li>Jasmin，低等级的中间表示（<a href="https://github.com/Sable/jasmin/" target="_blank" rel="noopener">Jasmin</a>同样是该团队的开源项目）</li>
+</ul>
+<h2 id="Soot的输出"><a href="#Soot的输出" class="headerlink" title="Soot的输出"></a>Soot的输出</h2><ul>
+<li>Java字节码</li>
+<li>Android字节码</li>
+<li>Jimple</li>
+<li>Jasmin</li>
+</ul>
+<p>根据官方说法，Soot可以从任何输入格式转换为任何输出格式，例如，可以从Android转换成Java或者从Java转换到Jasmin。</p>
+<h2 id="Soot提供的分析"><a href="#Soot提供的分析" class="headerlink" title="Soot提供的分析"></a>Soot提供的分析</h2><ul>
+<li>Call-graph结构（Call-graph construction）</li>
+<li>指向分析（Points-to analysis）</li>
+<li>定义/使用链（Def/use chains）</li>
+<li>模板驱动的程序内部的数据流分析（Template-driven Intra-procedural data-flow analysis）</li>
+<li>模板驱动的程序之间的数据流分析，需结合<a href="https://github.com/Sable/heros" target="_blank" rel="noopener">Heros</a>（Template-driven Inter-procedural data-flow analysis, in combination with heros）</li>
+<li>结合<a href="https://blogs.uni-paderborn.de/sse/tools/flowdroid/" target="_blank" rel="noopener">FlowDroid</a>的污点分析（Taint analysis in combination with FlowDroid），污点就是一些安全风险</li>
+</ul>
+<h2 id="Soot的内部中间表示"><a href="#Soot的内部中间表示" class="headerlink" title="Soot的内部中间表示"></a>Soot的内部中间表示</h2><p>Soot主要是将程序转换成中间表示（intermediate representation），然后对其进行分析。现在Soot主要提供了四种中间表示用于分析和转换Java字节码：</p>
+<ul>
+<li>Baf：简化的字节码表示形式</li>
+<li>Jimple：适合优化的3地址类型的中间表示</li>
+<li>Shimple：Jimple的SSA变体</li>
+<li>Grimp：Jimple的聚合版本，适合反编译和代码检查</li>
+</ul>
+<p>Jimple是Soot主要使用的中间表示，大多数的分析都是在Jimple上进行的。Soot同样支持添加自定义中间表示。</p>
+<h2 id="项目中包含Soot"><a href="#项目中包含Soot" class="headerlink" title="项目中包含Soot"></a>项目中包含Soot</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>ca.mcgill.sable<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>soot<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>以上是Maven项目中的引入方式，其他构建环境，例如Gradle可以通过相应的坐标获得。</p>
+<h2 id="为什么学Soot"><a href="#为什么学Soot" class="headerlink" title="为什么学Soot"></a>为什么学Soot</h2><p>我现在的研究方向与静态分析有关，所以最近一直在了解静态分析有关的工具，Soot算是一个应用比较广泛的工具，所以在之后的一段时间内我还会继续学习有关Soot的知识。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/25/junit测试用例编写之异常测试（三）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1463,7 +1649,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1476,7 +1662,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
