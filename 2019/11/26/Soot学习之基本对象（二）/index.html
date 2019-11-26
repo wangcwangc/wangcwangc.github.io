@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Soot,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="基本对象Soot具有庞大且复杂的类层次结构。官网给出了Body，Unit，Local，Value，UnitBox和ValueBox的概念 Body在Soot中，Body相当于代码中每一个方法的方法体，然后与SootMethod相关联，每一个Body都应该知道有一个SootMethod与它关联，而每一个SootMethod也只能有一个活跃的Body，可以通过SootMethod.getActiveB">
+<meta name="keywords" content="Soot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Soot学习之基本对象（二）">
+<meta property="og:url" content="http://yoursite.com/2019/11/26/Soot学习之基本对象（二）/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="基本对象Soot具有庞大且复杂的类层次结构。官网给出了Body，Unit，Local，Value，UnitBox和ValueBox的概念 Body在Soot中，Body相当于代码中每一个方法的方法体，然后与SootMethod相关联，每一个Body都应该知道有一个SootMethod与它关联，而每一个SootMethod也只能有一个活跃的Body，可以通过SootMethod.getActiveB">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-11-26T05:27:18.679Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Soot学习之基本对象（二）">
+<meta name="twitter:description" content="基本对象Soot具有庞大且复杂的类层次结构。官网给出了Body，Unit，Local，Value，UnitBox和ValueBox的概念 Body在Soot中，Body相当于代码中每一个方法的方法体，然后与SootMethod相关联，每一个Body都应该知道有一个SootMethod与它关联，而每一个SootMethod也只能有一个活跃的Body，可以通过SootMethod.getActiveB">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/11/26/Soot学习之基本对象（二）/">
+
+
+
+
+
+  <title>Soot学习之基本对象（二） | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">学习、工作、生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/26/Soot学习之基本对象（二）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wang Chao">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Soot学习之基本对象（二）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-26T09:23:43+08:00">
+                2019-11-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="基本对象"><a href="#基本对象" class="headerlink" title="基本对象"></a>基本对象</h1><p>Soot具有庞大且复杂的类层次结构。官网给出了<code>Body</code>，<code>Unit</code>，<code>Local</code>，<code>Value</code>，<code>UnitBox</code>和<code>ValueBox</code>的概念</p>
+<h2 id="Body"><a href="#Body" class="headerlink" title="Body"></a>Body</h2><p>在Soot中，Body相当于代码中每一个方法的方法体，然后与SootMethod相关联，每一个Body都应该知道有一个SootMethod与它关联，而每一个SootMethod也只能有一个活跃的Body，可以通过<code>SootMethod.getActiveBody()</code>获得Body。</p>
+<p>根据上文说的，Soot有四种中间表示，所以此处也有四种实现类<code>JimpleBody</code>，<code>ShimpleBody</code>，<code>BafBody</code>和<code>GrimpBody</code>。</p>
+<p>Body中有三个链：<code>Units</code>、<code>Locals</code>和<code>Traps</code>。</p>
+<p>根据<a href="https://github.com/Sable/soot/wiki/Fundamental-Soot-objects" target="_blank" rel="noopener">官方示例</a>解释一下这三个链是什么。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] argv)</span> <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = <span class="number">2</span>, y = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">"Hi!"</span>);</span><br><span class="line">    System.out.println(x * y + y);</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> z = y * x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Exception e)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">throw</span> e;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简化后的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(java.lang.String[])</span> <span class="keyword">throws</span> java.lang.Exception</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    java.lang.String[] r0;</span><br><span class="line">    <span class="keyword">int</span> i0, i1, i2, $i3, $i4;</span><br><span class="line">    java.io.PrintStream $r1, $r2;</span><br><span class="line">    java.lang.Exception $r3, r4;</span><br><span class="line"></span><br><span class="line">    r0 := <span class="meta">@parameter</span>0;</span><br><span class="line">    i0 = <span class="number">2</span>;</span><br><span class="line">    i1 = <span class="number">6</span>;</span><br><span class="line">    $r1 = java.lang.System.out;</span><br><span class="line">    $r1.println(``Hi!<span class="string">''</span>);</span><br><span class="line">    $r2 = java.lang.System.out;</span><br><span class="line">    $i3 = i0 * i1;</span><br><span class="line">    $i4 = $i3 + i1;</span><br><span class="line">    $r2.println($i4);</span><br><span class="line"></span><br><span class="line"> label0:</span><br><span class="line">    i2 = i1 * i0;</span><br><span class="line"></span><br><span class="line"> label1:</span><br><span class="line">    goto label3;</span><br><span class="line"></span><br><span class="line"> label2:</span><br><span class="line">    $r3 := <span class="meta">@caughtexception</span>;</span><br><span class="line">    r4 = $r3;</span><br><span class="line">    <span class="keyword">throw</span> r4;</span><br><span class="line"></span><br><span class="line"> label3:</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">catch</span> java.lang.Exception from label0 to label1 with label2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Locals"><a href="#Locals" class="headerlink" title="Locals"></a>Locals</h3><p>在简化后的方法的顶端，我们可以看见几行本地变量的声明：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">java.lang.String[] r0;</span><br><span class="line"><span class="keyword">int</span> i0, i1, i2, $i3, $i4;</span><br><span class="line">java.io.PrintStream $r1, $r2;</span><br><span class="line">java.lang.Exception $r3, r4;</span><br></pre></td></tr></table></figure>
+
+<p>这些本地变量的集合存储在<code>localChain</code>中，可以通过<code>body.getLocals()</code>获取。对于每一个局部变量<code>r0</code>，它的所有的方法都是可以调用的，包括 <code>r0.getName()</code>， <code>r0.getType()</code>， <code>r0.setName()</code>和<code>r0.setType()</code>。</p>
+<h3 id="Traps"><a href="#Traps" class="headerlink" title="Traps"></a>Traps</h3><p>Soot中的Body定义了traps的概念来支持Java异常处理。在Java的字节码中，异常处理由一个元组表示（异常类型、开始处、结束处、处理程序），在启动和结束（包括启动，不包括结束）之间，如果引发异常，则处理程序继续执行。</p>
+<p>在示例代码中，最后一句就是一个trap：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">catch</span> java.lang.Exception from label0 to label1 with label2;</span><br></pre></td></tr></table></figure>
+
+<p>异常类型<code>java.lang.Exception</code>，开始处<code>label0</code>，结束处<code>label1</code>和处理程序<code>label2</code>。</p>
+<h3 id="Units"><a href="#Units" class="headerlink" title="Units"></a>Units</h3><p>在Body中，Unit是包含实际代码的部分。Jimple提供Unit的实现类Stmt，Grimp提供Unit的实现类Inst，其它两种中间表示也有它们自己的实现。</p>
+<p>Unit提供以下方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List <span class="title">getUseBoxes</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> List <span class="title">getDefBoxes</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> List <span class="title">getUseAndDefBoxes</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>这些方法可以返回一个<code>ValueBox</code>的列表，分别是使用的值、定义的值和定义并使用的值。例如<code>getUseBoxs()</code>方法会返回所有使用的值，包括组成他们的表达式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List <span class="title">getUnitBoxes</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>上边这个方法返回一个UnitBox的列表，是当前Unit所指向的所有Unit。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List <span class="title">getBoxesPointingToThis</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>上边这个方法返回的UnitBox列表是所有指向当前Unit的所有Unit。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">fallsThrough</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">branches</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>上述方法表示当前<code>Unit</code>执行结束的后的一些流程。如果执行可以继续进行到下一个<code>Unit</code>，则前一个方法返回<code>true</code>，如果继续执行会到几个<code>Unit</code>而不是立即执行，后者方法就会返回<code>true</code>，意思就是当前<code>Unit</code>执行完后下一个是一个分支。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">redirectJumpsToThisTo</span><span class="params">(Unit newLocation)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法就是改变所有指向当前<code>Unit</code>的所有<code>Unit</code>重新指向到新的位置。</p>
+<h2 id="Value"><a href="#Value" class="headerlink" title="Value"></a>Value</h2><p>Soot提供了Value接口，有以下几种类型：</p>
+<ul>
+<li><code>Local</code>s</li>
+<li><code>Constant</code>s</li>
+<li>Expressions (<code>Expr</code>)</li>
+<li><code>ParameterRef</code>s, <code>CaughtExceptionRef</code>s and <code>ThisRef</code>s</li>
+</ul>
+<p>Expr接口又有大量的实现，包括<code>NewExpr</code>和<code>AddExpr</code>。一般一个<code>Expr</code>是一系列<code>Value</code>的操作，然后返回一个新<code>Value</code>。官方给了一个示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x = y + <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个<code>AssignStmt</code>，右边是<code>AddExpr</code>（加表达式）<code>y+2</code>，这个表达式包括两个Value，<code>y</code>和<code>2</code>，<code>y</code>是局部变量<code>Local</code>，<code>2</code>是常量<code>Constant</code>。</p>
+<p>在Jimple中，Soot强制所有Value最多包含一个表达式，Grimp没有这个限制，所以Grimp易于阅读难以分析。</p>
+<h2 id="Box"><a href="#Box" class="headerlink" title="Box"></a>Box</h2><p>在Soot中，Box是一个指针，提供对Soot的间接访问。</p>
+<p><code>Box</code>有两种实现<code>ValueBox</code>和<code>UnitBox</code>，前者包含一系列的Value，后者包含一系列Unit。</p>
+<h3 id="UnitBox"><a href="#UnitBox" class="headerlink" title="UnitBox"></a>UnitBox</h3><p>某些类型的Unit会包含其他Unit的引用。例如，<code>GotoStmt</code>需要知道目标是什么，因此，Soot提供<code>UnitBox</code>，一个Box包含Unit。示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    x = <span class="number">5</span>;</span><br><span class="line">    goto l2;</span><br><span class="line">    y = <span class="number">3</span>;</span><br><span class="line">l2: z = <span class="number">9</span>;</span><br></pre></td></tr></table></figure>
+
+<p>每一个Unit必须提供getUnitBoxes()方法，大多数的UnitBox只会返回一个空list。然而在上例的<code>GotoStmt</code>中，调用该方法会返回一个单元素的list，包含一个指向l2的Box。</p>
+<p>如果是<code>SwitchStmt</code>，调用该方法就会返回一个包含多个Box的list。</p>
+<h3 id="ValueBox"><a href="#ValueBox" class="headerlink" title="ValueBox"></a>ValueBox</h3><p>与Unit类似，ValueBox指向Value。对于一个Unit，可以得到一个ValueBoxes列表，其中包含使用和定义的Unit。</p>
+<h1 id="其他对象"><a href="#其他对象" class="headerlink" title="其他对象"></a>其他对象</h1><h2 id="SootClass"><a href="#SootClass" class="headerlink" title="SootClass"></a>SootClass</h2><h2 id="SootMethod"><a href="#SootMethod" class="headerlink" title="SootMethod"></a>SootMethod</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Soot/" rel="tag"># Soot</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/25/Soot学习之Soot简介（一）/" rel="next" title="Soot学习之Soot简介（一）">
+                <i class="fa fa-chevron-left"></i> Soot学习之Soot简介（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Wang Chao</p>
+              <p class="site-description motion-element" itemprop="description">记录日常学习生活中遇到的编程问题和解决方案</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/wangcwangc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本对象"><span class="nav-number">1.</span> <span class="nav-text">基本对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Body"><span class="nav-number">1.1.</span> <span class="nav-text">Body</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Locals"><span class="nav-number">1.1.1.</span> <span class="nav-text">Locals</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Traps"><span class="nav-number">1.1.2.</span> <span class="nav-text">Traps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Units"><span class="nav-number">1.1.3.</span> <span class="nav-text">Units</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Value"><span class="nav-number">1.2.</span> <span class="nav-text">Value</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Box"><span class="nav-number">1.3.</span> <span class="nav-text">Box</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UnitBox"><span class="nav-number">1.3.1.</span> <span class="nav-text">UnitBox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ValueBox"><span class="nav-number">1.3.2.</span> <span class="nav-text">ValueBox</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他对象"><span class="nav-number">2.</span> <span class="nav-text">其他对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SootClass"><span class="nav-number">2.1.</span> <span class="nav-text">SootClass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SootMethod"><span class="nav-number">2.2.</span> <span class="nav-text">SootMethod</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Chao</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count"></span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
