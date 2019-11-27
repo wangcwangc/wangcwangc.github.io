@@ -252,6 +252,183 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/27/Linux下用nohup执行python程序重定向没有输出/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wang Chao">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/11/27/Linux下用nohup执行python程序重定向没有输出/" itemprop="url">Linux下用nohup执行python程序重定向没有输出</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-27T15:38:47+08:00">
+                2019-11-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="问题和解决方案"><a href="#问题和解决方案" class="headerlink" title="问题和解决方案"></a>问题和解决方案</h2><p>最近在远程服务器运行python项目的时候，需要nohup命令运行程序。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup python program.py &gt;out.txt 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+
+<p>如上所示命令。但是即使我设置了输出文件，在查看<code>out.txt</code>的时候，发现里面并没有任何输出，只有一句<code>nohup: ignore input</code>，这就让我很不解。</p>
+<p>后来经过查找资料，知道原来python有一个缓存区，需要添加<code>-u</code>命令来禁用缓冲区。</p>
+<p>所以原命令就变成了，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup python -u program.py &gt;out.txt 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+
+<p>这样我再查看<code>out.txt</code>，就发现有了我想要的输出了。</p>
+<h2 id="所用命令解释"><a href="#所用命令解释" class="headerlink" title="所用命令解释"></a>所用命令解释</h2><p>nohup命令全名是no hang up，意为不挂起，这在使用远程服务器运行程序的时候非常有用。因为我们在终端中要是把一个程序放在后台，通常在命令尾添加<code>&amp;</code>，但是这样在退出当前用户后，这个程序就会被终止掉，所以要使用nohup。</p>
+<p>在标准输入输出流中，0代表标准输入，1代表标准输出，2代表标准错误输出。</p>
+<p><code>&gt;out.txt</code>表示输出到这个文件，而<code>2&gt;&amp;1</code>表示把标准错误输出重定向到标准输出，所以合起来就是，把标准错误输出重定向到标准输出中，然后标准输出到<code>out.txt</code>文件中。</p>
+<p>如果不设置输出文件，则会使用缺省值<code>nohup.out</code>。</p>
+<p><code>&amp;</code>为后台运行。</p>
+<h2 id="可能用到的其他命令"><a href="#可能用到的其他命令" class="headerlink" title="可能用到的其他命令"></a>可能用到的其他命令</h2><p>如果我们想要查看任务状态可以用<code>jobs</code>命令，查看pid信息，需要加参数<code>jobs -l</code>。</p>
+<p>但是，如果我们重新登录后，再使用jobs会发现所有的程序都没了，这并不是因为程序终止了，而是jobs清空，可以理解成你不是刚才登录的你了。</p>
+<p>所以我们在这种情况下，只能使用ps来查看pid。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep python</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>ps</code>表示显示后台程序<code>aux</code>是<code>ps</code>的三个参数。</p>
+<ul>
+<li>a表示显示现行终端机下的所有程序，包括其他用户的程序</li>
+<li>u表示以用户为主的格式来显示程序状况</li>
+<li>x显示所有程序，不以终端机来区分</li>
+</ul>
+<p><code>grep</code>表示过滤信息，后边<code>python</code>表示只显示每行包含<code>python</code>字符串的那一行。</p>
+<p>因为<code>ps</code>命令会显示好几屏的信息，不用过滤的话基本很难找到在哪里。<code>grep</code>根据自己的情况自行设置。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/26/Soot学习之基本对象（二）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1855,7 +2032,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1868,7 +2045,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
